@@ -90,16 +90,24 @@ body{
 }
 .media-chip b{font-weight:600}
 
-.opts{display:grid;gap:9px}
+.opts{display:grid;gap:10px}
 .opt{
-  display:flex;align-items:center;gap:11px;border:1px solid var(--line);
-  border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s;
+  position:relative;display:flex;align-items:center;gap:12px;background:#fff;
+  border:1.5px solid var(--line);border-radius:11px;padding:13px 15px;cursor:pointer;
+  transition:border-color .15s,background .15s;
 }
-.opt:hover{border-color:#c8cfdb}
-.opt.sel{border-color:var(--navy);background:#f4f7fd}
-.opt input{accent-color:var(--navy);width:18px;height:18px;flex-shrink:0;margin:0}
-.opt span{font-size:14.5px}
-.opts.two{grid-template-columns:1fr 1fr;display:grid}
+.opt:hover{border-color:#bcc6da;background:#fafbfd}
+.opt.sel{border-color:var(--navy);background:#eef3fb}
+.opt input{position:absolute;opacity:0;width:0;height:0;margin:0;pointer-events:none}
+.opt .dot{
+  width:20px;height:20px;border-radius:50%;border:2px solid #c4ccda;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:border-color .15s;
+}
+.opt.sel .dot{border-color:var(--navy)}
+.opt .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--navy);transform:scale(0);transition:transform .12s}
+.opt.sel .dot::after{transform:scale(1)}
+.opt .txt{font-size:14.5px}
+.opts.two{display:grid;grid-template-columns:1fr 1fr}
 @media(max-width:420px){.opts.two{grid-template-columns:1fr}}
 
 .subcard{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:11px}
@@ -163,7 +171,6 @@ body{
       <div class="shead"><div class="snum">2</div><h2>Responsável técnico</h2></div>
       <div class="field"><label>Nome do(a) médico-veterinário(a) ou técnico(a) responsável <span class="req">*</span></label><input name="tecnico" required><div class="err">Informe o responsável técnico.</div></div>
       <div class="field"><label>E-mail do(a) técnico(a) responsável <span class="req">*</span></label><input name="emailTecnico" type="email" required placeholder="tecnico@email.com.br"><div class="err">Informe um e-mail válido.</div></div>
-      <div class="field"><label>Pessoa de contato na Alta <span class="req">*</span></label><input name="contatoAlta" required placeholder="Com quem você fala na Alta"><div class="err">Informe a pessoa de contato.</div></div>
     </div>
 
     <!-- 3 -->
@@ -180,9 +187,9 @@ body{
       <div class="field" style="margin-bottom:0">
         <label>Forma de envio de dados para o Alta CRIA <span class="req">*</span></label>
         <div class="opts" id="envioOpts">
-          <label class="opt"><input type="radio" name="envio" value="Excel"><span>Planilha Alta CRIA (Excel)</span></label>
-          <label class="opt"><input type="radio" name="envio" value="DairyComp"><span>DairyComp</span></label>
-          <label class="opt"><input type="radio" name="envio" value="Ideagri"><span>Consulta SQL do Ideagri</span></label>
+          <label class="opt"><input type="radio" name="envio" value="Excel"><span class="dot"></span><span class="txt">Planilha Alta CRIA (Excel)</span></label>
+          <label class="opt"><input type="radio" name="envio" value="DairyComp"><span class="dot"></span><span class="txt">DairyComp</span></label>
+          <label class="opt"><input type="radio" name="envio" value="Ideagri"><span class="dot"></span><span class="txt">Consulta SQL do Ideagri</span></label>
         </div>
         <div class="group-err" id="envioErr">Selecione a forma de envio.</div>
       </div>
@@ -200,25 +207,31 @@ body{
         </div>
       </div>
       <div class="subcard">
-        <h3>Vaga 2</h3>
-        <div class="field"><label>Nome completo <span class="req">*</span></label><input name="w2nome" required><div class="err">Informe o nome.</div></div>
+        <h3>Vaga 2 <span style="text-transform:none;letter-spacing:0;color:#9aa2af;font-weight:400">(opcional)</span></h3>
+        <div class="field"><label>Nome completo</label><input name="w2nome"></div>
         <div class="grid2">
-          <div class="field" style="margin-bottom:0"><label>Cargo <span class="req">*</span></label><input name="w2cargo" required><div class="err">Informe o cargo.</div></div>
-          <div class="field" style="margin-bottom:0"><label>Telefone com DDD <span class="req">*</span></label><input name="w2tel" class="tel" inputmode="numeric" required placeholder="(00) 00000-0000"><div class="err">Informe o telefone.</div></div>
+          <div class="field" style="margin-bottom:0"><label>Cargo</label><input name="w2cargo"></div>
+          <div class="field" style="margin-bottom:0"><label>Telefone com DDD</label><input name="w2tel" class="tel" inputmode="numeric" placeholder="(00) 00000-0000"></div>
         </div>
       </div>
     </div>
 
     <!-- 5 -->
     <div class="section">
-      <div class="shead"><div class="snum">5</div><h2>Termos e consentimentos</h2></div>
+      <div class="shead"><div class="snum">5</div><h2>Contato na Alta</h2></div>
+      <div class="field" style="margin-bottom:0"><label>Pessoa de contato na Alta <span class="req">*</span></label><input name="contatoAlta" required placeholder="Com quem você fala na Alta"><div class="err">Informe a pessoa de contato.</div></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="section">
+      <div class="shead"><div class="snum">6</div><h2>Termos e consentimentos</h2></div>
       <label class="consent"><input type="checkbox" name="regras" id="regras"><span>Estou ciente de todas as regras e condições de envio de dados, preenchimento e regras comerciais para participação no programa Alta CRIA <span class="req">*</span></span></label>
       <div class="group-err" id="regrasErr" style="margin-top:-12px">É necessário concordar para participar.</div>
       <div class="field" style="margin-bottom:0">
         <label>Divulgação do nome e imagem da fazenda como participante <span class="req">*</span></label>
         <div class="opts two" id="imgOpts">
-          <label class="opt"><input type="radio" name="imagem" value="De acordo"><span>De acordo</span></label>
-          <label class="opt"><input type="radio" name="imagem" value="Não estou de acordo"><span>Não estou de acordo</span></label>
+          <label class="opt"><input type="radio" name="imagem" value="De acordo"><span class="dot"></span><span class="txt">De acordo</span></label>
+          <label class="opt"><input type="radio" name="imagem" value="Não estou de acordo"><span class="dot"></span><span class="txt">Não estou de acordo</span></label>
         </div>
         <div class="group-err" id="imgErr">Selecione uma opção.</div>
       </div>
